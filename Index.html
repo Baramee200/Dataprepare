@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>โครงสร้างหน่วยงาน</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <h2>สร้างโครงสร้างหน่วยงาน</h2>
+    <button id="themeToggle">🌙 Dark / ☀️ Day</button>
+  </div>
+
+  <div id="structures"></div>
+  <button onclick="addStructure()">+ สำนักงาน</button>
+  <br><br>
+  <button onclick="preview()">Preview</button>
+  <button onclick="exportExcel()">Export Excel</button>
+
+  <div id="preview"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
