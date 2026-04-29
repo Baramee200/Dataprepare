@@ -145,7 +145,7 @@ function exportExcel() {
 
   const now = new Date();
   const dateStr = now.toISOString().split("T")[0];
-  XLSX.writeFile(wb, `ส่วนงานหน่วยงาน_${dateStr}.xlsx`);
+  XLSX.writeFile(wb, `โครงสร้างหน่วยงาน_${dateStr}.xlsx`);
 }
 
 function updateOfficeName(input) {
