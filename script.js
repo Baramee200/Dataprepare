@@ -34,6 +34,7 @@ function addStructure() {
   li.innerHTML = `
     <input class="officeName" value="${officeName}" placeholder="สำนัก" oninput="updateOfficeName(this)" />
     <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
+    <label><input type="checkbox" class="sendOnly"> สร้างเฉพาะทะเบียนส่ง</label>
     <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
     <div class="actions hidden">
       <button onclick="addNode(this.closest('li').querySelector('ul'),'กอง')">+ กอง</button>
@@ -58,9 +59,10 @@ function addNode(parent, type) {
   const li = document.createElement("li");
   li.innerHTML = `
     <span class="toggle" onclick="toggleNode(this)">▶</span>
-    <input placeholder="${type}" />
-    <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
-    <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
+  <input placeholder="${type}" />
+  <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
+  <label><input type="checkbox" class="sendOnly"> สร้างเฉพาะทะเบียนส่ง</label>
+  <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
     <div class="actions hidden">
       <button onclick="addNode(this.closest('li').querySelector('ul'),'กอง')">+ กอง</button>
       <button onclick="addNode(this.closest('li').querySelector('ul'),'แผนก')">+ แผนก</button>
