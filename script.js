@@ -108,14 +108,20 @@ function traverse(node, structureIndex) {
   inputs.forEach(li => {
     const input = li.querySelector("input[type='text'], input:not([type])");
     const skip = li.querySelector(".skipRegister")?.checked;
+    const sendOnly = li.querySelector(".sendOnly")?.checked;
     const name = input?.value.trim();
 
     if (name) {
-      if (!skip) {
-        previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
+      if (skip) {
+        // ไม่สร้างทะเบียนเลย
+        previewRows.push([`โครงสร้าง ${structureIndex}`, name, "", structureIndex]);
+      } else if (sendOnly) {
+        // สร้างเฉพาะทะเบียนส่ง
         previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
       } else {
-        previewRows.push([`โครงสร้าง ${structureIndex}`, name, "", structureIndex]);
+        // สร้างทั้งรับและส่ง
+        previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
+        previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
       }
     }
 
@@ -123,6 +129,7 @@ function traverse(node, structureIndex) {
     if (childUl) traverse(childUl, structureIndex);
   });
 }
+
 
 function preview() {
   previewRows = [];
