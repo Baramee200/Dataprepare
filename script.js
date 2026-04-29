@@ -106,12 +106,12 @@ function traverse(node, structureIndex) {
 
     if (name) {
       if (skip) {
-        previewRows.push([`โครงสร้าง ${structureIndex}`, name, "", structureIndex]);
+        previewRows.push([`ส่วนงาน ${structureIndex}`, name, "", structureIndex]);
       } else if (sendOnly) {
-        previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
+        previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
       } else {
-        previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
-        previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
+        previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
+        previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
       }
     }
 
@@ -125,7 +125,7 @@ function preview() {
   const structures = document.querySelectorAll(".structure");
   structures.forEach((s, idx) => traverse(s, idx+1));
 
-  let html = "<table><tr><th>โครงสร้าง</th><th>ชื่อหน่วยงาน</th><th>ทะเบียน</th></tr>";
+  let html = "<table><tr><th>ส่วนงาน</th><th>ชื่อหน่วยงาน</th><th>ทะเบียน</th></tr>";
   previewRows.forEach(row => {
     html += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`;
   });
@@ -137,15 +137,15 @@ function exportExcel() {
   if (previewRows.length === 0) return alert("กรุณา Preview ก่อน Export");
 
   const ws = XLSX.utils.aoa_to_sheet([
-    ["โครงสร้าง","ชื่อหน่วยงาน","ทะเบียน"],
+    ["ส่วนงาน","ชื่อหน่วยงาน","ทะเบียน"],
     ...previewRows.map(r => [r[0], r[1], r[2]])
   ]);
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "โครงสร้าง");
+  XLSX.utils.book_append_sheet(wb, ws, "ส่วนงาน");
 
   const now = new Date();
   const dateStr = now.toISOString().split("T")[0];
-  XLSX.writeFile(wb, `โครงสร้างหน่วยงาน_${dateStr}.xlsx`);
+  XLSX.writeFile(wb, `ส่วนงานหน่วยงาน_${dateStr}.xlsx`);
 }
 
 function updateOfficeName(input) {
