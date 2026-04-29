@@ -5,9 +5,8 @@ document.getElementById("themeToggle").addEventListener("click", () => {
 });
 
 function addStructure() {
-  // ให้ผู้ใช้กรอกชื่อสำนักงานทันที
   const officeName = prompt("กรอกชื่อสำนักงาน");
-  if (!officeName) return; // ถ้าไม่กรอก ไม่สร้าง
+  if (!officeName) return;
 
   const container = document.getElementById("structures");
   const card = document.createElement("div");
@@ -52,17 +51,16 @@ function addStructure() {
   container.appendChild(card);
 }
 
-
 function deleteStructure(el) { el.closest(".card").remove(); }
 
 function addNode(parent, type) {
   const li = document.createElement("li");
   li.innerHTML = `
     <span class="toggle" onclick="toggleNode(this)">▶</span>
-  <input placeholder="${type}" />
-  <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
-  <label><input type="checkbox" class="sendOnly"> สร้างเฉพาะทะเบียนส่ง</label>
-  <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
+    <input placeholder="${type}" />
+    <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
+    <label><input type="checkbox" class="sendOnly"> สร้างเฉพาะทะเบียนส่ง</label>
+    <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
     <div class="actions hidden">
       <button onclick="addNode(this.closest('li').querySelector('ul'),'กอง')">+ กอง</button>
       <button onclick="addNode(this.closest('li').querySelector('ul'),'แผนก')">+ แผนก</button>
@@ -73,7 +71,6 @@ function addNode(parent, type) {
   `;
   parent.appendChild(li);
 
-  // เมื่อเพิ่ม node ใหม่ → แสดงปุ่มลบของ parent
   const parentDeleteBtn = parent.closest("li")?.querySelector(".delete");
   if (parentDeleteBtn) {
     parentDeleteBtn.classList.remove("hidden");
@@ -84,7 +81,6 @@ function deleteNode(el) {
   const li = el.closest("li");
   li.remove();
 
-  // ถ้า parent ไม่มี child แล้ว → ซ่อนปุ่มลบอีกครั้ง
   const parentUl = li.parentNode;
   if (parentUl && parentUl.children.length === 0) {
     const parentDeleteBtn = parentUl.closest("li")?.querySelector(".delete");
@@ -93,9 +89,6 @@ function deleteNode(el) {
     }
   }
 }
-
-
-function deleteNode(el) { el.parentNode.remove(); }
 
 function toggleNode(el) {
   const li = el.parentNode;
@@ -113,13 +106,10 @@ function traverse(node, structureIndex) {
 
     if (name) {
       if (skip) {
-        // ไม่สร้างทะเบียนเลย
         previewRows.push([`โครงสร้าง ${structureIndex}`, name, "", structureIndex]);
       } else if (sendOnly) {
-        // สร้างเฉพาะทะเบียนส่ง
         previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
       } else {
-        // สร้างทั้งรับและส่ง
         previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
         previewRows.push([`โครงสร้าง ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
       }
@@ -129,7 +119,6 @@ function traverse(node, structureIndex) {
     if (childUl) traverse(childUl, structureIndex);
   });
 }
-
 
 function preview() {
   previewRows = [];
@@ -154,17 +143,18 @@ function exportExcel() {
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "โครงสร้าง");
 
-  // เพิ่มวันที่ในชื่อไฟล์
   const now = new Date();
   const dateStr = now.toISOString().split("T")[0];
   XLSX.writeFile(wb, `โครงสร้างหน่วยงาน_${dateStr}.xlsx`);
 }
+
 function updateOfficeName(input) {
   const card = input.closest(".card");
   const headerTitle = card.querySelector(".card-header h3");
   const value = input.value.trim();
   headerTitle.textContent = value ? value : `สำนักงาน ${card.dataset.index}`;
 }
+
 function toggleActions(btn) {
   const li = btn.closest("li");
   const actions = li.querySelector(".actions");
