@@ -34,6 +34,7 @@ function addStructure() {
     <input class="officeName" value="${officeName}" placeholder="สำนัก" oninput="updateOfficeName(this)" />
     <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
     <label><input type="checkbox" class="sendOnly"> สร้างเฉพาะทะเบียนส่ง</label>
+    <label><input type="checkbox" class="receiveOnly"> สร้างเฉพาะทะเบียนรับ</label>
     <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
     <div class="actions hidden">
       <button onclick="addNode(this.closest('li').querySelector('ul'),'กอง')">+ กอง</button>
@@ -60,26 +61,29 @@ function addNode(parent, type) {
     <input placeholder="${type}" />
     <label><input type="checkbox" class="skipRegister"> ไม่สร้างทะเบียน</label>
     <label><input type="checkbox" class="sendOnly"> สร้างเฉพาะทะเบียนส่ง</label>
+    <label><input type="checkbox" class="receiveOnly"> สร้างเฉพาะทะเบียนรับ</label>
     <button class="toggleActions" onclick="toggleActions(this)">⚙ จัดการ</button>
     <div class="actions hidden">
       <button onclick="addNode(this.closest('li').querySelector('ul'),'กอง')">+ กอง</button>
       <button onclick="addNode(this.closest('li').querySelector('ul'),'แผนก')">+ แผนก</button>
       <button onclick="addNode(this.closest('li').querySelector('ul'),'ส่วนงาน')">+ ส่วนงาน</button>
-      <button class="delete hidden" onclick="deleteNode(this)">🗑 ลบ</button>
+      <!-- เอา hidden ออก -->
+      <button class="delete" onclick="deleteNode(this)">🗑 ลบ</button>
     </div>
     <ul></ul>
   `;
   parent.appendChild(li);
-
+}
   const parentDeleteBtn = parent.closest("li")?.querySelector(".delete");
   if (parentDeleteBtn) {
     parentDeleteBtn.classList.remove("hidden");
   }
-}
+
 
 function deleteNode(el) {
   const li = el.closest("li");
   li.remove();
+}
 
   const parentUl = li.parentNode;
   if (parentUl && parentUl.children.length === 0) {
@@ -88,7 +92,7 @@ function deleteNode(el) {
       parentDeleteBtn.classList.add("hidden");
     }
   }
-}
+
 
 function toggleNode(el) {
   const li = el.parentNode;
@@ -102,6 +106,7 @@ function traverse(node, structureIndex) {
     const input = li.querySelector("input[type='text'], input:not([type])");
     const skip = li.querySelector(".skipRegister")?.checked;
     const sendOnly = li.querySelector(".sendOnly")?.checked;
+    const receiveOnly = li.querySelector(".receiveOnly")?.checked; // เพิ่มตรงนี้
     const name = input?.value.trim();
 
     if (name) {
@@ -109,6 +114,8 @@ function traverse(node, structureIndex) {
         previewRows.push([`ส่วนงาน ${structureIndex}`, name, "", structureIndex]);
       } else if (sendOnly) {
         previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
+      } else if (receiveOnly) {
+        previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
       } else {
         previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนรับ) ${name}`, structureIndex]);
         previewRows.push([`ส่วนงาน ${structureIndex}`, name, `(ทะเบียนส่ง) ${name}`, structureIndex]);
@@ -119,6 +126,7 @@ function traverse(node, structureIndex) {
     if (childUl) traverse(childUl, structureIndex);
   });
 }
+
 
 function preview() {
   previewRows = [];
